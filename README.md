@@ -18,14 +18,14 @@ Most MCP clients support remote HTTP servers directly. Add this to your MCP conf
 }
 ```
 
-### Option 2: npx (for clients without remote HTTP support)
+### Option 2: npx from GitHub (for clients without remote HTTP support)
 
 ```json
 {
   "mcpServers": {
     "dmarc-examiner": {
       "command": "npx",
-      "args": ["-y", "@dmarc-examiner/mcp"]
+      "args": ["-y", "github:dmarc-examiner/mcp"]
     }
   }
 }
