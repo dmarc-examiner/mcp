@@ -21,7 +21,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/dmarc-examiner/mcp.git"
+    "url": "https://github.com/dmarc-examiner/mcp.git"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1"
