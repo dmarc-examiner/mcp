@@ -1,0 +1,36 @@
+{
+  "name": "@dmarc-examiner/mcp",
+  "version": "1.0.0",
+  "description": "DMARC Examiner MCP plugin for Claude Desktop, Claude Code, and Cursor",
+  "main": "dist/index.js",
+  "bin": {
+    "dmarc-examiner-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "dmarc",
+    "dmarc-examiner",
+    "claude",
+    "model-context-protocol"
+  ],
+  "author": "DMARC Examiner <support@dmarc-examiner.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/dmarc-examiner/mcp.git"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
