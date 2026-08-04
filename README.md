@@ -1,6 +1,24 @@
 # @dmarc-examiner/mcp
 
-Official MCP (Model Context Protocol) plugin for [DMARC Examiner](https://dmarc-examiner.com). Connect your DMARC monitoring data to AI assistants like Claude Desktop, Claude Code, and Cursor.
+[![MCP](https://img.shields.io/badge/MCP-compatible-blue)](https://modelcontextprotocol.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Tools](https://img.shields.io/badge/tools-8-orange)](#available-tools)
+
+Official MCP (Model Context Protocol) server for [DMARC Examiner](https://dmarc-examiner.com/?utm_source=github&utm_medium=content&utm_campaign=mcp-repo). Query your DMARC monitoring data from AI assistants like Claude Desktop, Claude Code, and Cursor.
+
+## Why
+
+DMARC aggregate reports arrive as compressed XML, one file per receiver per day. Reading them means either opening a dashboard or parsing XML by hand.
+
+This server puts that data behind an MCP connection, so you can ask questions instead:
+
+> *Which sending sources failed DMARC alignment last week?*
+
+> *Show me the domains where SPF passes but DKIM does not.*
+
+> *Export the report for example.com as CSV.*
+
+DMARC Examiner is a DMARC monitoring service with a free tier — you need an account to use this server, but not a paid one.
 
 ## Quick Setup
 
@@ -100,9 +118,13 @@ On first use, your MCP client will open a browser window to authorize access. Yo
 
 ## Documentation
 
-For detailed documentation, visit: https://dmarc-examiner.com/docs/settings/mcp-integration
+For detailed documentation, visit: https://dmarc-examiner.com/docs/settings/mcp-integration?utm_source=github&utm_medium=content&utm_campaign=mcp-repo
 
 ## Support
 
-- Documentation: https://dmarc-examiner.com/docs
+- Documentation: https://dmarc-examiner.com/docs?utm_source=github&utm_medium=content&utm_campaign=mcp-repo
 - Email: support@dmarc-examiner.com
+
+## License
+
+MIT — see [LICENSE](LICENSE).
