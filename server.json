@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.dmarc-examiner/mcp",
+  "description": "Query DMARC monitoring data for your own domains: aggregate reports by sending source, SPF/DKIM alignment results, forensic reports, security alerts and CSV export.",
+  "version": "1.1.0",
+  "websiteUrl": "https://dmarc-examiner.com/docs/settings/mcp-integration?utm_source=mcp-registry&utm_medium=content&utm_campaign=mcp-repo",
+  "repository": {
+    "url": "https://github.com/dmarc-examiner/mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.dmarc-examiner.com/mcp"
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@dmarc-examiner/mcp",
+      "version": "1.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "DMARC_EXAMINER_MCP_URL",
+          "description": "Override the remote endpoint the bridge connects to. Defaults to https://mcp.dmarc-examiner.com/mcp; only needed for self-hosted or staging deployments.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
