@@ -1,0 +1,17 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dmarc-examiner",
+  "version": "1.1.0",
+  "description": "Read your own DMARC aggregate and forensic reports: sources, alignment, alerts, CSV export.",
+  "homepage": "https://dmarc-examiner.com/docs/settings/mcp-integration",
+  "repository": "https://github.com/dmarc-examiner/mcp",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "dmarc",
+    "spf",
+    "dkim",
+    "email-security",
+    "email-authentication"
+  ]
+}
