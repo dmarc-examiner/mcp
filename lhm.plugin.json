@@ -1,0 +1,467 @@
+{
+  "author": "DMARC Examiner",
+  "cloudEndpoint": "https://mcp.dmarc-examiner.com/mcp",
+  "description": "Read your own DMARC aggregate and forensic reports: sources, alignment, alerts, CSV export.",
+  "homepage": "https://dmarc-examiner.com/docs/settings/mcp-integration",
+  "identifier": "dmarc-examiner-mcp",
+  "name": "DMARC Examiner MCP",
+  "prompts": [],
+  "resources": [],
+  "tags": [
+    "mcp",
+    "dmarc",
+    "spf",
+    "dkim",
+    "email-security"
+  ],
+  "tools": [
+    {
+      "name": "list_domains",
+      "description": "List all monitored domains in your organization",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "number"
+          },
+          "per_page": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_domain",
+      "description": "Get details of a specific domain",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "description": "Domain UUID"
+          }
+        },
+        "required": [
+          "domain_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "check_dmarc",
+      "description": "Inspect the public DMARC record at _dmarc.<domain>. The domain does not need to belong to your organization. Returns parsed policy and rua/ruf addresses.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Domain to inspect — does not need to belong to your organization."
+          }
+        },
+        "required": [
+          "domain"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "create_domain",
+      "description": "Add a new domain to the organization. Response includes the reporting_email and dmarc_record values to publish in DNS. May return 402 if the plan domain limit has been reached.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Domain name to monitor (e.g. \"example.com\"). Stored lowercased."
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "verify_domain",
+      "description": "Re-check a domain's DNS to confirm the DMARC record contains the organization's reporting email. Updates status to verified on success.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "description": "Domain UUID"
+          }
+        },
+        "required": [
+          "domain_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "delete_domain",
+      "description": "Remove a domain from monitoring. Soft-deletes; historical reports remain accessible.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "description": "Domain UUID"
+          }
+        },
+        "required": [
+          "domain_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "list_reports",
+      "description": "List DMARC reports for your organization",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "number"
+          },
+          "per_page": {
+            "type": "number"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "date_from": {
+            "type": "string"
+          },
+          "date_to": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_report",
+      "description": "Get details of a specific DMARC report",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "report_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "report_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_report_statistics",
+      "description": "Get statistics for a specific DMARC report",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "report_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "report_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "export_report_csv",
+      "description": "Export a DMARC report as CSV",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "report_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "report_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "list_alerts",
+      "description": "List alerts for your organization",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "number"
+          },
+          "per_page": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "dismiss_alert",
+      "description": "Dismiss a specific alert",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "alert_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "alert_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "list_forensic_reports",
+      "description": "List DMARC RUF (forensic) reports with optional filtering and pagination. Returns 403 if the plan does not include forensic reports (Pro plan and above).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "domain_id": {
+            "type": "string",
+            "description": "Filter by domain UUID"
+          },
+          "date_from": {
+            "type": "string",
+            "description": "Inclusive lower bound on arrival_date (ISO 8601 / \"YYYY-MM-DD HH:MM:SS\")"
+          },
+          "date_to": {
+            "type": "string",
+            "description": "Inclusive upper bound on arrival_date"
+          },
+          "page": {
+            "type": "number"
+          },
+          "per_page": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_forensic_report",
+      "description": "Get the full detail of a forensic (RUF) report by UUID, including the raw failed message envelope.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "report_id": {
+            "type": "string",
+            "description": "Forensic report UUID"
+          }
+        },
+        "required": [
+          "report_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_forensic_reports_statistics",
+      "description": "Aggregated forensic-report counters grouped by auth failure type, delivery result, source IP (with geolocation) and reported domain.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_forensic_reports_summary",
+      "description": "Summary of forensic activity in the last 7 days — useful for daily digest views.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "list_webhooks",
+      "description": "List webhook endpoints configured for the organization. Returns 403 if the plan does not include advanced alerting (Pro and above).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "create_webhook",
+      "description": "Create a new webhook endpoint. URL must start with https://. Returns 422 if the organization has reached its webhook limit.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "HTTPS URL events will be POSTed to"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable label"
+          }
+        },
+        "required": [
+          "url",
+          "name"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "update_webhook",
+      "description": "Update a webhook. Any combination of url, name and is_active may be provided; URL must remain HTTPS.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "webhook_id": {
+            "type": "string",
+            "description": "Webhook UUID"
+          },
+          "url": {
+            "type": "string",
+            "description": "New HTTPS URL"
+          },
+          "name": {
+            "type": "string",
+            "description": "New label"
+          },
+          "is_active": {
+            "type": "boolean",
+            "description": "Enable/disable delivery without losing config"
+          }
+        },
+        "required": [
+          "webhook_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "delete_webhook",
+      "description": "Delete a webhook endpoint permanently.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "webhook_id": {
+            "type": "string",
+            "description": "Webhook UUID"
+          }
+        },
+        "required": [
+          "webhook_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "test_webhook",
+      "description": "Send a synchronous webhook.test event to verify connectivity. Returns the delivery status. Test events do NOT update last_triggered_at, last_status or failure_count.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "webhook_id": {
+            "type": "string",
+            "description": "Webhook UUID"
+          }
+        },
+        "required": [
+          "webhook_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    }
+  ],
+  "version": "1.1.0"
+}
