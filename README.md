@@ -87,13 +87,19 @@ Add to your Cursor MCP settings:
 
 ## Authorization
 
-On first use a browser window opens so you can authorize access. You'll need to:
+**Adding the server does not require authorizing.** It starts immediately and answers `initialize`, `tools/list` and `ping` without credentials, so your client can list all 21 tools straight away.
+
+A browser opens the first time you call a tool that touches your data. You'll need to:
 
 1. Log in to your DMARC Examiner account
 2. Select which organization to connect
 3. Approve the requested permissions (scopes)
 
+The call you made is then replayed automatically, so it completes rather than failing.
+
 With **Option 1** the MCP client runs this flow itself. With **Option 2** the package does it: it registers as an OAuth client, opens your browser, and stores the resulting tokens in `~/.dmarc-examiner/mcp-credentials.json` with `0600` permissions. The refresh token is reused on later runs, so the browser step happens once.
+
+> **Why it works this way.** Authorizing on startup is the obvious design and it breaks every automated client: directory checks, scanners and CI have no browser to open, so the server appears to hang and the check times out. We wrote up the failure and the fix, with logs, in [Your Remote MCP Server Will Fail Every Directory Check](https://dmarc-examiner.com/blog/remote-mcp-servers-oauth-directories).
 
 You can also drive it directly:
 
