@@ -2,7 +2,7 @@
 
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { auth } from '@modelcontextprotocol/sdk/client/auth.js';
+import { auth, UnauthorizedError } from '@modelcontextprotocol/sdk/client/auth.js';
 import type { JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js';
 import {
   CliOAuthProvider,
@@ -19,11 +19,30 @@ function log(message: string): void {
 }
 
 /**
- * Obtains tokens before any traffic is proxied.
+ * Reuses stored tokens, refreshing them if needed, and never opens a browser.
  *
- * Authorizing up front rather than reacting to a 401 mid-session matters: the
- * MCP client on the other end of stdio is blocked on its `initialize`, and a
- * browser round trip in the middle of that exchange looks like a hang.
+ * The server answers `initialize` and `tools/list` without a token, so a fresh
+ * install can start, be inspected and list its tools before anyone authorizes.
+ * Demanding a browser round trip up front would block that: an MCP client is
+ * waiting on its `initialize`, and an automated environment has no browser at
+ * all — which is why Glama's build test could never start this server.
+ */
+async function resumeAuthorization(provider: CliOAuthProvider): Promise<void> {
+  if (!provider.tokens()) return;
+
+  try {
+    await auth(provider, { serverUrl: MCP_SERVER_URL });
+  } catch (error) {
+    log(`Stored credentials could not be refreshed: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+/**
+ * Runs the full authorization, opening a browser and waiting for the callback.
+ *
+ * Called on demand: either explicitly via `login`, or the first time the server
+ * rejects a request that needs a token — in practice a tool call, where the
+ * user has just asked for something and a pause to authorize is expected.
  */
 async function authorize(provider: CliOAuthProvider): Promise<void> {
   let result: Awaited<ReturnType<typeof auth>>;
@@ -60,7 +79,7 @@ async function authorize(provider: CliOAuthProvider): Promise<void> {
  */
 async function proxy(): Promise<void> {
   const provider = new CliOAuthProvider();
-  await authorize(provider);
+  await resumeAuthorization(provider);
 
   const upstream = new StreamableHTTPClientTransport(new URL(MCP_SERVER_URL), {
     authProvider: provider,
@@ -79,8 +98,29 @@ async function proxy(): Promise<void> {
   upstream.onmessage = (message: JSONRPCMessage) => {
     void downstream.send(message).catch((error: Error) => shutdown(`stdio write failed: ${error.message}`));
   };
+  // A request the server will not serve unauthenticated comes back as a 401,
+  // which the transport surfaces as UnauthorizedError. That is the moment to
+  // send the user to the browser — not at startup, when nobody has asked for
+  // anything yet. The original message is replayed once tokens are in hand so
+  // the client's call completes rather than failing and needing a retry.
+  let authorizing: Promise<void> | undefined;
+
+  const forward = async (message: JSONRPCMessage): Promise<void> => {
+    try {
+      await upstream.send(message);
+    } catch (error) {
+      if (!(error instanceof UnauthorizedError)) throw error;
+
+      authorizing ??= authorize(provider).finally(() => {
+        authorizing = undefined;
+      });
+      await authorizing;
+      await upstream.send(message);
+    }
+  };
+
   downstream.onmessage = (message: JSONRPCMessage) => {
-    void upstream.send(message).catch((error: Error) => shutdown(`upstream send failed: ${error.message}`));
+    void forward(message).catch((error: Error) => shutdown(`upstream send failed: ${error.message}`));
   };
 
   upstream.onclose = () => void shutdown();
