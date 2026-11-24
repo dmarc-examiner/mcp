@@ -3,6 +3,7 @@
 [![MCP](https://img.shields.io/badge/MCP-compatible-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Tools](https://img.shields.io/badge/tools-21-orange)](#available-tools)
+[![dmarc-examiner/mcp MCP server](https://glama.ai/mcp/servers/dmarc-examiner/mcp/badges/score.svg)](https://glama.ai/mcp/servers/dmarc-examiner/mcp)
 
 Official MCP (Model Context Protocol) server for [DMARC Examiner](https://dmarc-examiner.com/?utm_source=github&utm_medium=content&utm_campaign=mcp-repo). Query your DMARC monitoring data from AI assistants like Claude Desktop, Claude Code, and Cursor.
 
